@@ -181,28 +181,28 @@ async function decodeFunctionResult() {
       <h2>Event</h2>
       Topics: <input v-model="eventTopics" placeholder='0x...Topic1,0x...Topic2,0x...Topic3' />&nbsp;
       Data: <input v-model="eventData" placeholder='0x...Data'/>&nbsp;
-      <button @click="decodeEvent" :disabled="abiError == '' || eventTopics == '' || eventData == ''">Decode Event</button>
+      <button @click="decodeEvent" :disabled="abi == '' || abiError != '' || eventTopics == '' || eventData == ''">Decode Event</button>
       <br />
       <pre v-if="eventResult != ''">{{eventResult}}</pre>
     </div>
     <div class="error">
       <h2>Error</h2>
       Hex: <input v-model="error" placeholder="0x..." />&nbsp;
-      <button @click="decodeError" :disabled="abiError == '' || error == ''">Decode Error</button>
+      <button @click="decodeError" :disabled="abi == '' || abiError != '' || error == ''">Decode Error</button>
       <br />
       <pre v-if="errorResult != ''">{{errorResult}}</pre>
     </div>
     <div class="function-data">
       <h2>Function-Data</h2>
       Hex: <input v-model="functionData" placeholder="0x..." />&nbsp;
-      <button @click="decodeFunctionData" :disabled="abiError == '' || functionData == ''">Decode Function Data</button>
+      <button @click="decodeFunctionData" :disabled="abi == '' || abiError != '' || functionData == ''">Decode Function Data</button>
       <br />
       <pre v-if="functionDataResult != ''">{{functionDataResult}}</pre>
     </div>
     <div class="function-result">
       <h2>Function-Result</h2>
       Hex: <input v-model="functionResult" placeholder="0x..." />&nbsp;
-      <button @click="decodeFunctionResult" :disabled="abiError == '' || functionResult == ''">Decode Function Result</button>
+      <button @click="decodeFunctionResult" :disabled="abi == '' || abiError != '' || functionResult == ''">Decode Function Result</button>
       <br />
       <pre v-if="functionResultResult != ''">{{functionResultResult}}</pre>
     </div>
