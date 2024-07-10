@@ -1,12 +1,24 @@
 <script setup lang="ts">
 import {Ref, ref} from "vue";
 import {FormatTypes, Interface} from "@ethersproject/abi";
-import { keccak256 } from "@ethersproject/keccak256";
-import { toUtf8Bytes } from "@ethersproject/strings";
+import {keccak256} from "@ethersproject/keccak256";
+import {toUtf8Bytes} from "@ethersproject/strings";
 
 // ------ ------ ------ ------ ------ ------ ------ ------ ------
 
 const abi: Ref<string> = ref('');
+
+const abiError: Ref<string> = ref('');
+
+function parseABI(): Interface {
+  try{
+    abiError.value = '';
+    return new Interface(abi.value);
+  } catch (e) {
+    abiError.value = 'Invalid ABI';
+  }
+  return new Interface([]);
+}
 
 // ------ ------ ------ ------ ------ ------ ------ ------ ------
 
@@ -16,7 +28,7 @@ const eventData: Ref<string> = ref('');
 const eventResult: Ref<string> = ref('');
 
 async function decodeEvent() {
-  const i = new Interface(abi.value);
+  const i = parseABI();
   const items = i.format(FormatTypes.full);
   for (const item of items) {
     // console.log(item);
@@ -54,7 +66,7 @@ const errorResult: Ref<string> = ref('');
 async function decodeError() {
   const selector = error.value.slice(0, 10);
 
-  const i = new Interface(abi.value);
+  const i = parseABI();
   const items = i.format(FormatTypes.minimal);
   for (const item of items) {
     // console.log(item);
@@ -94,7 +106,7 @@ const functionResultResult: Ref<string> = ref('');
 async function decodeFunctionData() {
   const selector = functionData.value.slice(0, 10);
 
-  const i = new Interface(abi.value);
+  const i = parseABI();
   const items = i.format(FormatTypes.minimal);
   for (const item of items) {
     // console.log(item);
@@ -128,7 +140,7 @@ async function decodeFunctionResult() {
 
   // TODO 未测试
 
-  const i = new Interface(abi.value);
+  const i = parseABI();
   const items = i.format(FormatTypes.minimal);
   for (const item of items) {
     // console.log(item);
@@ -162,37 +174,34 @@ async function decodeFunctionResult() {
   <div>
     <div class="abi">
       <h2>Paste your ABI here</h2>
-      <textarea v-model="abi" cols="80" rows="12" />
+      <textarea v-model="abi" cols="80" rows="12" :class="{'abi-error': abiError != ''}" @blur="parseABI" />&nbsp;
+      <span style="color: red">{{abiError}}</span>
     </div>
     <div class="event">
       <h2>Event</h2>
-      <input v-model="eventTopics" placeholder='0x...Topic1,0x...Topic2,0x...Topic3' />&nbsp;
-      <input v-model="eventData" placeholder='0x...Data'/>
-      <br />
+      Topics: <input v-model="eventTopics" placeholder='0x...Topic1,0x...Topic2,0x...Topic3' />&nbsp;
+      Data: <input v-model="eventData" placeholder='0x...Data'/>&nbsp;
       <button @click="decodeEvent">Decode Event</button>
       <br />
       <pre v-if="eventResult != ''">{{eventResult}}</pre>
     </div>
     <div class="error">
       <h2>Error</h2>
-      Hex: <input v-model="error" />
-      <br />
+      Hex: <input v-model="error" />&nbsp;
       <button @click="decodeError">Decode Error</button>
       <br />
       <pre v-if="errorResult != ''">{{errorResult}}</pre>
     </div>
     <div class="function-data">
       <h2>Function-Data</h2>
-      Hex: <input v-model="functionData" />
-      <br />
+      Hex: <input v-model="functionData" />&nbsp;
       <button @click="decodeFunctionData">Decode Function Data</button>
       <br />
       <pre v-if="functionDataResult != ''">{{functionDataResult}}</pre>
     </div>
     <div class="function-result">
       <h2>Function-Result</h2>
-      Hex: <input v-model="functionResult" />
-      <br />
+      Hex: <input v-model="functionResult" />&nbsp;
       <button @click="decodeFunctionResult">Decode Function Result</button>
       <br />
       <pre v-if="functionResultResult != ''">{{functionResultResult}}</pre>
@@ -201,6 +210,9 @@ async function decodeFunctionResult() {
 </template>
 
 <style scoped>
+.abi-error {
+  border: 1px solid red;
+}
 input {
   width: 220px;
   height: 24px;
@@ -209,7 +221,7 @@ button {
   margin-top: 8px;
 }
 pre {
-  border-radius: 8px;
+  border-radius: 4px;
   border: 1px solid green;
   white-space: pre-wrap;
   word-wrap: break-word;
