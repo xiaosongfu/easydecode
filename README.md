@@ -1,3 +1,3 @@
 # EasyDecode
 
-Decode contract's error、event、function-data and function result easily.
+Decode smart contract's error、event、function-data and function-result easily.

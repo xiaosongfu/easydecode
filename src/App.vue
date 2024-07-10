@@ -211,5 +211,7 @@ button {
 pre {
   border-radius: 8px;
   border: 1px solid green;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 </style>
