@@ -174,35 +174,35 @@ async function decodeFunctionResult() {
   <div>
     <div class="abi">
       <h2>Paste your ABI here</h2>
-      <textarea v-model="abi" cols="80" rows="12" :class="{'abi-error': abiError != ''}" @blur="parseABI" />&nbsp;
+      <textarea v-model="abi" cols="80" rows="12" placeholder='[ { "inputs": [], "name": "Transfer", "type": "event" }, ... ]' :class="{'abi-error': abiError != ''}" @blur="parseABI" />&nbsp;
       <span style="color: red">{{abiError}}</span>
     </div>
     <div class="event">
       <h2>Event</h2>
       Topics: <input v-model="eventTopics" placeholder='0x...Topic1,0x...Topic2,0x...Topic3' />&nbsp;
       Data: <input v-model="eventData" placeholder='0x...Data'/>&nbsp;
-      <button @click="decodeEvent">Decode Event</button>
+      <button @click="decodeEvent" :disabled="eventTopics == '' || eventData == ''">Decode Event</button>
       <br />
       <pre v-if="eventResult != ''">{{eventResult}}</pre>
     </div>
     <div class="error">
       <h2>Error</h2>
-      Hex: <input v-model="error" />&nbsp;
-      <button @click="decodeError">Decode Error</button>
+      Hex: <input v-model="error" placeholder="0x..." />&nbsp;
+      <button @click="decodeError" :disabled="error == ''">Decode Error</button>
       <br />
       <pre v-if="errorResult != ''">{{errorResult}}</pre>
     </div>
     <div class="function-data">
       <h2>Function-Data</h2>
-      Hex: <input v-model="functionData" />&nbsp;
-      <button @click="decodeFunctionData">Decode Function Data</button>
+      Hex: <input v-model="functionData" placeholder="0x..." />&nbsp;
+      <button @click="decodeFunctionData" :disabled="functionData == ''">Decode Function Data</button>
       <br />
       <pre v-if="functionDataResult != ''">{{functionDataResult}}</pre>
     </div>
     <div class="function-result">
       <h2>Function-Result</h2>
-      Hex: <input v-model="functionResult" />&nbsp;
-      <button @click="decodeFunctionResult">Decode Function Result</button>
+      Hex: <input v-model="functionResult" placeholder="0x..." />&nbsp;
+      <button @click="decodeFunctionResult" :disabled="functionResult == ''">Decode Function Result</button>
       <br />
       <pre v-if="functionResultResult != ''">{{functionResultResult}}</pre>
     </div>
