@@ -206,6 +206,9 @@ async function decodeFunctionResult() {
       <br />
       <pre v-if="functionResultResult != ''">{{functionResultResult}}</pre>
     </div>
+    <div class="star">
+      <div><a href="https://github.com/xiaosongfu/easydecode" target="_blank"><img src="https://github.githubassets.com/favicons/favicon-dark.svg" alt="github" width="24xp" height="24px" />&nbsp;Give me a star🌟</a></div>
+    </div>
   </div>
 </template>
 
@@ -225,5 +228,8 @@ pre {
   border: 1px solid green;
   white-space: pre-wrap;
   word-wrap: break-word;
+}
+.star {
+  margin-top: 18px;
 }
 </style>
