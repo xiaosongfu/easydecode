@@ -175,8 +175,10 @@ async function decodeFunctionResult() {
     <div class="abi">
       <h2>Paste your ABI here</h2>
       <textarea v-model="abi" cols="80" rows="12" placeholder='[ { "inputs": [], "name": "Transfer", "type": "event" }, ... ]' :class="{'abi-error': abiError != ''}" @blur="parseABI" />&nbsp;
+      <br/>
       <span style="color: red">{{abiError}}</span>
     </div>
+    <hr />
     <div class="event">
       <h2>Event</h2>
       Topics: <input v-model="eventTopics" placeholder='0x...Topic1,0x...Topic2,0x...Topic3' />&nbsp;
@@ -185,6 +187,7 @@ async function decodeFunctionResult() {
       <br />
       <pre v-if="eventResult != ''">{{eventResult}}</pre>
     </div>
+    <hr />
     <div class="error">
       <h2>Error</h2>
       Hex: <input v-model="error" placeholder="0x..." />&nbsp;
@@ -192,6 +195,7 @@ async function decodeFunctionResult() {
       <br />
       <pre v-if="errorResult != ''">{{errorResult}}</pre>
     </div>
+    <hr />
     <div class="function-data">
       <h2>Function-Data</h2>
       Hex: <input v-model="functionData" placeholder="0x..." />&nbsp;
@@ -199,6 +203,7 @@ async function decodeFunctionResult() {
       <br />
       <pre v-if="functionDataResult != ''">{{functionDataResult}}</pre>
     </div>
+    <hr />
     <div class="function-result">
       <h2>Function-Result</h2>
       Hex: <input v-model="functionResult" placeholder="0x..." />&nbsp;
@@ -206,6 +211,7 @@ async function decodeFunctionResult() {
       <br />
       <pre v-if="functionResultResult != ''">{{functionResultResult}}</pre>
     </div>
+    <hr />
     <div class="star">
       <div><a href="https://github.com/xiaosongfu/easydecode" target="_blank"><img src="https://github.githubassets.com/favicons/favicon-dark.svg" alt="github" width="24xp" height="24px" />&nbsp;Give me a star🌟</a></div>
     </div>
