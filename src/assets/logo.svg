@@ -1,0 +1,54 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle with subtle gradient -->
+  <circle cx="60" cy="60" r="58" fill="url(#logoGradient)" opacity="0.15"/>
+  <circle cx="60" cy="60" r="56" fill="white" opacity="0.05"/>
+  
+  <!-- Main icon: Decode symbol with lock and code -->
+  <g transform="translate(25, 25)">
+    <!-- Lock body -->
+    <rect x="28" y="38" width="24" height="24" rx="3" fill="url(#logoGradient)"/>
+    <path d="M 32 38 L 32 26 Q 32 18 40 18 L 40 18 Q 48 18 48 26 L 48 38" 
+          stroke="url(#logoGradient)" 
+          stroke-width="3.5" 
+          fill="none" 
+          stroke-linecap="round"/>
+    
+    <!-- Decode arrows pointing outward -->
+    <path d="M 8 35 L 2 35 M 2 35 L 6 31 M 2 35 L 6 39" 
+          stroke="url(#logoGradient)" 
+          stroke-width="3" 
+          stroke-linecap="round" 
+          stroke-linejoin="round"/>
+    <path d="M 62 35 L 68 35 M 68 35 L 64 31 M 68 35 L 64 39" 
+          stroke="url(#logoGradient)" 
+          stroke-width="3" 
+          stroke-linecap="round" 
+          stroke-linejoin="round"/>
+    
+    <!-- Code brackets representing data -->
+    <path d="M 4 22 L 1 22 L 1 48 L 4 48" 
+          stroke="url(#logoGradient)" 
+          stroke-width="2.5" 
+          fill="none" 
+          stroke-linecap="round"/>
+    <path d="M 66 22 L 69 22 L 69 48 L 66 48" 
+          stroke="url(#logoGradient)" 
+          stroke-width="2.5" 
+          fill="none" 
+          stroke-linecap="round"/>
+    
+    <!-- Hex data dots (0x representation) -->
+    <circle cx="12" cy="22" r="2.5" fill="url(#logoGradient)"/>
+    <circle cx="20" cy="22" r="2.5" fill="url(#logoGradient)"/>
+    <circle cx="50" cy="22" r="2.5" fill="url(#logoGradient)"/>
+    <circle cx="58" cy="22" r="2.5" fill="url(#logoGradient)"/>
+  </g>
+</svg>
+

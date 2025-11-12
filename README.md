@@ -1,7 +1,7 @@
 # EasyDecode
 
-Decode smart contract's error、event、function-data and function-result easily.
+Easily decode errors, events, and function data from EVM-compatible smart contracts
 
-[easydecode.dev](https://easydecode.dev/)
+[easydecode.numalabs.dev](https://easydecode.numalabs.dev/)
 
 > We also provide a hardhat plugin, please refer to [hardhat-decode](https://github.com/xiaosongfu/hardhat-decode)
