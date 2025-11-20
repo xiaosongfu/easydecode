@@ -39,12 +39,12 @@ async function decodeEvent() {
             // console.log(eventSignature, " |---| ", eventHash);
 
             const topics = eventTopics.value.split(",");
-            if (topics[0] == eventHash) {
+            if (topics[0].trim() == eventHash) {
                 found = true;
                 const result = i.decodeEventLog(
                     i.getEvent(eventSignature)!!,
                     eventData.value,
-                    topics,
+                    topics.map((topic) => topic.trim()),
                 );
 
                 console.log(eventSignature);
