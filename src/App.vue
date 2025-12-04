@@ -113,6 +113,7 @@ async function decodeError() {
 
 const functionData: Ref<string> = ref("");
 const functionResult: Ref<string> = ref("");
+const functionSignatureForResult: Ref<string> = ref("");
 
 const functionDataResult: Ref<string> = ref("");
 const functionResultResult: Ref<string> = ref("");
@@ -130,7 +131,7 @@ async function decodeFunctionData() {
             const functionSelector = keccak256(
                 toUtf8Bytes(functionSignature),
             ).slice(0, 10); // '0x' + 4 bytes(8 hex chars)
-            // console.log(functionSignature, ' |---| ', functionSelector);
+            console.log(functionSignature, "-->", functionSelector);
 
             if (selector == functionSelector) {
                 found = true;
@@ -157,43 +158,60 @@ async function decodeFunctionData() {
 }
 
 async function decodeFunctionResult() {
-    const selector = functionResult.value.slice(0, 10);
+    try {
+        const i = parseABI();
 
-    // TODO 未测试
+        // 用户可以输入完整的函数签名或者只输入函数选择器
+        let functionSignature = functionSignatureForResult.value.trim();
 
-    let found = false;
-    const i = parseABI();
-    const items = i.format(FormatTypes.minimal);
-    for (const item of items) {
-        // console.log(item);
-        if (item.startsWith("function ")) {
-            const functionSignature = item.replace("function ", ""); // 'function borrowInterestRate() view returns (uint256)'
-            const functionSelector = keccak256(
-                toUtf8Bytes(functionSignature),
-            ).slice(0, 10); // '0x' + 4 bytes(8 hex chars)
-            // console.log(functionSignature, ' |---| ', functionSelector);
+        // 如果输入的是选择器（0x开头的8位hex），则从ABI中查找对应的函数
+        if (
+            functionSignature.startsWith("0x") &&
+            functionSignature.length === 10
+        ) {
+            const selector = functionSignature;
+            let found = false;
+            const items = i.format(FormatTypes.minimal);
 
-            if (selector == functionSelector) {
-                found = true;
-                const result = i.decodeFunctionResult(
-                    i.getFunction(functionSignature)!!,
-                    functionResult.value,
-                );
+            for (const item of items) {
+                if (item.startsWith("function ")) {
+                    const sig = item.replace("function ", "");
+                    const computedSelector = keccak256(toUtf8Bytes(sig)).slice(
+                        0,
+                        10,
+                    );
+                    console.log(functionSignature, "-->", computedSelector);
 
-                console.log(functionSignature);
-                for (const r of result.values()) {
-                    console.log("  >>> ", r.toString());
+                    if (
+                        selector.toLowerCase() ===
+                        computedSelector.toLowerCase()
+                    ) {
+                        functionSignature = sig;
+                        found = true;
+                        break;
+                    }
                 }
-                functionResultResult.value = `Function: ${functionSignature} \n Result: (${result.join(", ")})`;
+            }
 
-                break;
+            if (!found) {
+                functionResultResult.value = `No function found in ABI matching selector ${selector}`;
+                return;
             }
         }
 
-        if (!found) {
-            functionResultResult.value =
-                "No matching function found in ABI for the given function result.";
+        // 解码函数返回值
+        const result = i.decodeFunctionResult(
+            i.getFunction(functionSignature)!!,
+            functionResult.value,
+        );
+
+        console.log(functionSignature);
+        for (const r of result.values()) {
+            console.log("  >>> ", r.toString());
         }
+        functionResultResult.value = `Function: ${functionSignature} \n Result: (${result.join(", ")})`;
+    } catch (e) {
+        functionResultResult.value = `Error decoding function result: ${e instanceof Error ? e.message : String(e)}`;
     }
 }
 </script>
@@ -342,7 +360,17 @@ async function decodeFunctionResult() {
                 </div>
                 <div class="card-body">
                     <div class="form-group">
-                        <label class="form-label">Hex Data</label>
+                        <label class="form-label"
+                            >Function Signature or Selector</label
+                        >
+                        <input
+                            v-model="functionSignatureForResult"
+                            class="text-input"
+                            placeholder="e.g., balanceOf(address) or 0x70a08231"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Return Data (Hex)</label>
                         <input
                             v-model="functionResult"
                             class="text-input"
@@ -353,7 +381,10 @@ async function decodeFunctionResult() {
                         class="btn btn-primary"
                         @click="decodeFunctionResult"
                         :disabled="
-                            abi == '' || abiError != '' || functionResult == ''
+                            abi == '' ||
+                            abiError != '' ||
+                            functionResult == '' ||
+                            functionSignatureForResult == ''
                         "
                     >
                         Decode Function Result
